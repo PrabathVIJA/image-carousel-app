@@ -1,9 +1,8 @@
-function Image({ image }) {
-  console.log("Received in Image component:", image);
+function Image({ image, currentImage }) {
   if (!image || image.length === 0) return null;
   return (
     <img
-      src={image[0]?.download_url}
+      src={image[currentImage]?.download_url}
       alt="Girl in a jacket"
       width="500"
       height="600"
