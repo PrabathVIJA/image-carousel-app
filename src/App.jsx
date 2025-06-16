@@ -5,13 +5,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { ClipLoader } from "react-spinners";
 import Button from "./components/Button";
 import Image from "./components/Image";
+import Modal from "./components/Modal.jsx";
 import "./App.css";
 
 function App() {
   const [images, setIamges] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentImage, currentImageHandler] = useState(0);
-
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
     async function fetchImages() {
       setLoading(true);
@@ -42,6 +44,14 @@ function App() {
     }
     currentImageHandler((prevState) => prevState - 1);
   }
+  function closeModal() {
+    setShowModal(false);
+    setSelectedImage(null);
+  }
+  function handleImageClick(imageUrl) {
+    setSelectedImage(imageUrl);
+    setShowModal(true);
+  }
   return (
     <>
       <div id="Container">
@@ -52,13 +62,18 @@ function App() {
             <Button previousImageHanlder={previousImageHandler}>
               <FaArrowLeft />
             </Button>
-            <Image image={images} currentImage={currentImage} />
+            <Image
+              image={images}
+              currentImage={currentImage}
+              onClick={handleImageClick}
+            />
             <Button nextImageHandler={nextImageHandler}>
               <FaArrowRight />
             </Button>
           </>
         )}
       </div>
+      {showModal && <Modal imageUrl={selectedImage} onClose={closeModal} />}
       <ToastContainer position="top-right" autoClose={1000} />
     </>
   );
